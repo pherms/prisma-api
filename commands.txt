@@ -1,0 +1,5 @@
+npm run dev
+npx prisma db seed
+npx prisma migrate dev --name init
+npx prisma init --datasource-provider postgresql
+npm install express dotenv pg @prisma/client
