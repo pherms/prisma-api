@@ -16,8 +16,10 @@ model User {
   updatedAt      DateTime @updatedAt
   fullName       String
   emailAddress   String
+  userName       String
   password       String
   salt           String
+  sessionToken   String
   isActive       Boolean
   forgotPassword String
 }

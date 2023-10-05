@@ -1,6 +1,7 @@
 import express from 'express';
 import type { Request,Response} from 'express';
 import {body,validationResult} from 'express-validator';
+import { authentication, random } from '../utils/crypto.server';
 
 import * as UserService from "./user.service";
 
@@ -32,7 +33,7 @@ UserRouter.get("/:id", async (request: Request, response: Response) => {
 
 // POST: Create a new user
 // Params: fullName and emailAddress
-UserRouter.post("/", body("fullName").isString(),body("emailAddress").isString(), async (request: Request, response: Response) => {
+UserRouter.post("/", body("fullName").isString(),body("emailAddress").isString(),body("userName").isString(),body("password").isString(), async (request: Request, response: Response) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
         return response.status(400).json({ errors: errors.array() });
@@ -49,7 +50,7 @@ UserRouter.post("/", body("fullName").isString(),body("emailAddress").isString()
 
 // PUT: Update existing user
 // Params: fullName and emailAddress
-UserRouter.put("/:id", body("fullName").isString(), body("emailAddress").isString(), async (request: Request, response: Response) => {
+UserRouter.put("/:id", body("fullName").isString(), body("emailAddress").isString(),body("userName").isString(), async (request: Request, response: Response) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
         return response.status(400).json({ errors: errors.array() });
