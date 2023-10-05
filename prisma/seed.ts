@@ -34,7 +34,7 @@ async function seed() {
                 data: {
                     password: Authentication.password,
                     salt: Authentication.salt,
-                    userId: User.id,
+                    userId: user.id,
                 },
             });
         })
