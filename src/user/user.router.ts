@@ -1,7 +1,6 @@
 import express from 'express';
-import type { Request,Response} from 'express';
+import type { Request,Response } from 'express';
 import {body,validationResult} from 'express-validator';
-import { authentication, random } from '../utils/crypto.server';
 
 import * as UserService from "./user.service";
 

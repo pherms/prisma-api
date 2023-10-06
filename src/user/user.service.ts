@@ -1,3 +1,4 @@
+import { JsonValue } from "@prisma/client/runtime/library";
 import { authentication, random } from "../utils/crypto.server";
 import { db } from "../utils/db.server";
 
@@ -6,9 +7,7 @@ type User = {
     fullName: string;
     emailAddress: string;
     userName: string;
-    password: string;
-    salt: string;
-    sessionToken: string;
+    authenticationObject: JsonValue;
     isActive: boolean;
     forgotPassword: string;
 };
@@ -20,9 +19,7 @@ export const listUsers = async (): Promise<User[]> => {
             fullName: true,
             emailAddress: true,
             userName: true,
-            password: true,
-            salt: true,
-            sessionToken: true,
+            authenticationObject: true,
             isActive: true,
             forgotPassword: true,
         },
@@ -39,9 +36,7 @@ export const getUser = async (id: number): Promise<User | null> => {
             fullName: true,
             emailAddress: true,
             userName: true,
-            password: true,
-            salt: true,
-            sessionToken: true,
+            authenticationObject: true,
             isActive: true,
             forgotPassword: true,
         }
@@ -58,9 +53,7 @@ export const getUserByEmail = async (emailAddress: string): Promise<User | null>
             fullName: true,
             emailAddress: true,
             userName: true,
-            password: true,
-            salt: true,
-            sessionToken: true,
+            authenticationObject: true,
             isActive: true,
             forgotPassword: true,
         }
@@ -87,19 +80,17 @@ export const getUserByEmail = async (emailAddress: string): Promise<User | null>
 // };
 
 export const createUser = async (user: Omit<User, "id">): Promise<User> => {
-    const {fullName, emailAddress, userName, password, salt, sessionToken, isActive, forgotPassword,} = user;
+    const {fullName, emailAddress, userName, authenticationObject, isActive, forgotPassword,} = user;
     const generatedSalt = random();
-    user.salt = generatedSalt;
-    user.password = authentication(generatedSalt, user.password);
+    user.authenticationObject.salt = generatedSalt;
+    user.authenticationObject.password = authentication(generatedSalt, user.password);
     
     return db.user.create({
         data: {
             fullName,
             emailAddress,
             userName,
-            password,
-            salt,
-            sessionToken,
+            authenticationObject,
             isActive,
             forgotPassword,
         },
@@ -108,9 +99,7 @@ export const createUser = async (user: Omit<User, "id">): Promise<User> => {
             fullName: true,
             emailAddress: true,
             userName: true,
-            password: true,
-            salt: true,
-            sessionToken: true,
+            authenticationObject: true,
             isActive: true,
             forgotPassword: true,
         }
@@ -118,7 +107,7 @@ export const createUser = async (user: Omit<User, "id">): Promise<User> => {
 };
 
 export const updateUser = async (user: Omit<User, "id">, id: number): Promise<User> => {
-    const {fullName, emailAddress, userName, password, salt, sessionToken, isActive, forgotPassword} = user;
+    const {fullName, emailAddress, userName, authenticationObject, isActive, forgotPassword} = user;
     return db.user.update({
         where: {
             id,
@@ -127,9 +116,7 @@ export const updateUser = async (user: Omit<User, "id">, id: number): Promise<Us
             fullName,
             emailAddress,
             userName,
-            password,
-            salt,
-            sessionToken,
+            authenticationObject,
             isActive,
             forgotPassword,
         },
@@ -138,9 +125,7 @@ export const updateUser = async (user: Omit<User, "id">, id: number): Promise<Us
             fullName: true,
             emailAddress: true,
             userName: true,
-            password: true,
-            salt: true,
-            sessionToken: true,
+            authenticationObject: true,
             isActive: true,
             forgotPassword: true,
         }

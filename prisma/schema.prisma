@@ -17,9 +17,7 @@ model User {
   fullName       String
   emailAddress   String
   userName       String
-  password       String
-  salt           String
-  sessionToken   String
+  authenticationObject Json?
   isActive       Boolean
   forgotPassword String
 }
